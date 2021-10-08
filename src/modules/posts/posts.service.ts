@@ -12,7 +12,7 @@ export class PostsService {
     constructor(@InjectRepository(Post) private postsRepository: Repository<Post>) { }
 
     /* get all posts */
-    async getAllPost() {
+    async getAllPosts() {
         return await this.postsRepository.find();
     }
 
