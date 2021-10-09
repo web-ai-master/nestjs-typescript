@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 
+import { FindOneParams } from 'src/utils/findOneParams';
 import { CreatePostDto } from './models/dto/createPost.dto';
 import { UpdatePostDto } from './models/dto/updatePost.dto';
 import { PostsService } from './posts.service';
@@ -15,8 +16,8 @@ export class PostsController {
     }
 
     @Get(':id')
-    getPostById(@Param('id') id: number) {
-        return this.postsService.getPostById(id);
+    getPostById(@Param() {id}: FindOneParams) {
+        return this.postsService.getPostById(Number(id));
     }
 
     @Post()
