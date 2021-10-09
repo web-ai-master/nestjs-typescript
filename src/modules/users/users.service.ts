@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { ConflictException, HttpException, HttpStatus, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './models/dto/createUser.dto';
@@ -21,8 +21,18 @@ export class UsersService {
 
     /* create new user */
     async createUser(createUserDto:CreateUserDto) {
-        const newUser = await this.usersRepository.create(createUserDto);
-        await this.usersRepository.save(newUser);
-        return newUser;
+        const user = await this.usersRepository.create(createUserDto);
+      
+        try {
+            await this.usersRepository.save(user); 
+        } catch (err) {
+            if(err.code === 'ER_DUP_ENTRY') {
+                throw new HttpException('This email already exists', HttpStatus.CONFLICT);
+            } else {
+                throw new InternalServerErrorException();
+            }
+        }
+        delete user.password;
+        return user;   
     }
 }
