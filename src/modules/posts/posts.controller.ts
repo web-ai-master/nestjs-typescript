@@ -15,7 +15,7 @@ export class PostsController {
         return this.postsService.getAllPosts();
     }
 
-    @Get(':id')
+    @Get('/:id')
     getPostById(@Param() {id}: FindOneParams) {
         return this.postsService.getPostById(Number(id));
     }
@@ -25,12 +25,12 @@ export class PostsController {
         return this.postsService.createPost(createPostDto);
     }
 
-    @Patch(':id')
+    @Patch('/:id')
     async updatePost(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
         return this.postsService.updatePost(Number(id), updatePostDto);
     }
 
-    @Delete(':id')
+    @Delete('/:id')
     async deletePost(@Param('id') id: number) {
         return this.postsService.deletePost(id);
     }

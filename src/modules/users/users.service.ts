@@ -2,13 +2,14 @@ import { ConflictException, HttpException, HttpStatus, Injectable, InternalServe
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './models/dto/createUser.dto';
+import { Address } from './models/entities/address.entity';
 
 import { User } from './models/entities/user.entity';
 
 @Injectable()
 export class UsersService {
 
-    constructor(@InjectRepository(User) private usersRepository: Repository<User>) {}
+    constructor(@InjectRepository(User) private usersRepository: Repository<User>) { }
 
     /* get user by email */
     async getUserByEmail(email: string) {
@@ -34,5 +35,10 @@ export class UsersService {
         }
         delete user.password;
         return user;   
+    }
+
+    /* get all addresses with users */
+    async getAllUsersWithAddress() {
+        return await this.usersRepository.find({ relations: ['address'] });
     }
 }
