@@ -56,11 +56,16 @@ export class PostsService {
     }
 
     /* delete post */
-    async deletePost(id: number) {
-        const deleteResponse = await this.postsRepository.delete(id);
-        if (!deleteResponse.affected) {
-            throw new PostNotFoundException(id);
-        }
+    async deletePost(id: number, user: User) {
+
+        const post = await this.getPostById(id);
+        if(post.author.id === user.id ) {
+            const deleteResponse = await this.postsRepository.delete(id);
+            if (!deleteResponse.affected) {
+                throw new PostNotFoundException(id);
+            }
+        }  
+        throw new PostNotAuthorException(post.author.name);
     }
 
 }
