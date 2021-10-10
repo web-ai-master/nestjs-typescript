@@ -18,9 +18,25 @@ export class CategoriesService {
         return await this.categoriesRepository.find();
     }
 
+    /* get all categories with related posts */
+    getAllCategoriesWithPosts() {
+        return this.categoriesRepository.find({ 
+            relations: ['posts'] 
+        });
+    }
+
     /* get single category */
     async getCategory(id: number) {
         const category = await this.categoriesRepository.findOne(id);
+        if (category) {
+            return category;
+        }
+        throw new CategoryNotFoundException(id);
+    }
+
+     /* get single category with posts*/
+    async getCategoryWithPosts(id: number) {
+        const category = await this.categoriesRepository.findOne(id, { relations: ['posts'] });
         if (category) {
             return category;
         }

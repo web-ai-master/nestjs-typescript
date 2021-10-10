@@ -15,9 +15,19 @@ export class CategoriesController {
         return this.categoriesService.getAllCategories();
     }
 
+    @Get('/get/categories/with/posts')
+    getAllCategoriesWithPosts() {
+        return this.categoriesService.getAllCategoriesWithPosts();
+    }
+
     @Get('/get/category/:id')
     getCategory(@Param() {id}: FindOneParams) {
         return this.categoriesService.getCategory(Number(id));
+    }
+
+    @Get('/get/category/with/posts/:id')
+    getCategoryWithPosts(@Param() {id}: FindOneParams) {
+        return this.categoriesService.getCategoryWithPosts(Number(id));
     }
     
     @Post('/create/category')
