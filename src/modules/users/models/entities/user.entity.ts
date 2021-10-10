@@ -1,7 +1,8 @@
-import { BeforeInsert, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import * as bcrypt from 'bcrypt';
 import { Address } from "./address.entity";
 import { Exclude } from "class-transformer";
+import { Post } from "src/modules/posts/models/entities/post.entity";
 
 @Entity()
 export class User {
@@ -24,6 +25,9 @@ export class User {
     })
     @JoinColumn()
     public address: Address;
+
+    @OneToMany(() => Post, (post: Post) => post.author)
+    public posts: Post[];
 
     @BeforeInsert()
     async hashPassword() {
