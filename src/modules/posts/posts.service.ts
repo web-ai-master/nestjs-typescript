@@ -7,6 +7,7 @@ import { CreatePostDto } from './models/dto/createPost.dto';
 import { UpdatePostDto } from './models/dto/updatePost.dto';
 import { PostNotFoundException } from './exceptions/postNotFound.exception';
 import { User } from '../users/models/entities/user.entity';
+import { PostNotAuthorException } from './exceptions/postNotAuthor.exception';
 
 @Injectable()
 export class PostsService {
@@ -40,13 +41,18 @@ export class PostsService {
     }
 
     /* update post */
-    async updatePost(id: number, updatePostDto: UpdatePostDto) {
-        await this.postsRepository.update(id, updatePostDto);
-        const updatedPost = await this.postsRepository.findOne(id, { relations: ['author'] });
-        if (updatedPost) {
-            return updatedPost
-        }
-        throw new PostNotFoundException(id);
+    async updatePost(id: number, user: User, updatePostDto: UpdatePostDto) {
+        
+        const post = await this.getPostById(id);
+        if(post.author.id === user.id ) {
+            await this.postsRepository.update(id, updatePostDto);
+            const updatedPost = await this.postsRepository.findOne(id, { relations: ['author'] });
+            if (updatedPost) {
+                return updatedPost
+            }
+            throw new PostNotFoundException(id);
+        }  
+        throw new PostNotAuthorException(post.author.name);
     }
 
     /* delete post */
