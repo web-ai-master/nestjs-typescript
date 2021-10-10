@@ -7,6 +7,7 @@ import { APP_FILTER } from '@nestjs/core';
 import { PostsModule } from './modules/posts/posts.module';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { CategoriesModule } from './modules/categories/categories.module';
 
 import config from '../ormconfig';
 
@@ -18,7 +19,7 @@ import config from '../ormconfig';
     TypeOrmModule.forRoot(config), 
     PostsModule, 
     UsersModule, 
-    AuthModule
+    AuthModule, CategoriesModule
   ],
   controllers: [],
   providers: [
