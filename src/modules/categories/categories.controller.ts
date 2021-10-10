@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { FindOneParams } from 'src/utils/findOneParams';
 
 import { CategoriesService } from './categories.service';
@@ -28,6 +28,11 @@ export class CategoriesController {
     @Patch('/update/category/:id')
     updateCategory(@Param() {id}:FindOneParams, @Body() updateCategoryDto:UpdateCategoryDto) {
         return this.categoriesService.updateCategory(Number(id),updateCategoryDto);
+    }
+
+    @Delete('/delete/category/:id')
+    deleteCategory(@Param() {id}: FindOneParams) {
+        return this.categoriesService.deleteCategory(Number(id));
     }
 
 }

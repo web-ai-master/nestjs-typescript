@@ -58,4 +58,13 @@ export class CategoriesService {
             throw new InternalServerErrorException(err)
         }  
     }
+
+    /* delete category */
+    async deleteCategory(id:number) {
+        const existing = await this.getCategory(id);
+        if(existing) {
+            return await this.categoriesRepository.delete(id);
+        }  
+        throw new CategoryNotFoundException(id);
+    }
 }
