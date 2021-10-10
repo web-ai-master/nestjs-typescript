@@ -29,9 +29,10 @@ export class PostsController {
         return this.postsService.createPost(createPostDto, user);
     }
 
+    @UseGuards(AuthGuard('jwt'))
     @Patch('/:id')
-    async updatePost(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
-        return this.postsService.updatePost(Number(id), updatePostDto);
+    async updatePost(@Param('id') id: string, @AuthUser() user: User,  @Body() updatePostDto: UpdatePostDto) {
+        return this.postsService.updatePost(Number(id), user, updatePostDto);
     }
 
     @Delete('/:id')
