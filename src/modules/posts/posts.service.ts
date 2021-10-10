@@ -42,7 +42,7 @@ export class PostsService {
     /* update post */
     async updatePost(id: number, updatePostDto: UpdatePostDto) {
         await this.postsRepository.update(id, updatePostDto);
-        const updatedPost = await this.postsRepository.findOne(id);
+        const updatedPost = await this.postsRepository.findOne(id, { relations: ['author'] });
         if (updatedPost) {
             return updatedPost
         }
